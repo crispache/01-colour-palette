@@ -1,0 +1,68 @@
+@use "config" as *;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  border-radius: 4px;
+}
+
+@function get-color($container) {
+  @if $container == 1 {
+    @return $color1;
+  }
+
+  @if $container == 2 {
+    @return $color2;
+  }
+
+  @if $container == 3 {
+    @return $color3;
+  }
+
+  @return $default_color;
+}
+
+
+
+@for $num_container from 1 through $total_containers {
+  .container-#{$num_container} {
+    display: grid;
+    grid-template-columns: repeat(4, 100px) 150px repeat(4, 100px);
+    justify-content: center;
+    gap: 10px;
+    margin: 8px;
+
+    .base-color {
+      background-color: get-color($num_container);
+      color: white;
+    }
+
+    @for $num_box from 1 through 4 {
+      .darken-#{$num_box} {
+        background-color: darken(get-color($num_container), $num_box * 4%);
+        color: invert(white, $num_box * 8%);
+      }
+
+      .lighten-#{$num_box} {
+        background-color: lighten(get-color($num_container), $num_box * 6%);
+        color: invert(white, $num_box * 5%);
+      }
+    }
+  }
+}
